@@ -1,0 +1,159 @@
+@import "tailwindcss";
+
+html, body, section {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background-color: #F0E8DB;
+}
+
+html::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: url('/noise.png');
+  pointer-events: none;
+  z-index: 9999;
+}
+
+body {
+  background-color: #F0E8DB;
+  zoom: 0.70;
+}
+
+/* ─── Keyframes ─────────────────────────────────────────── */
+
+@keyframes pageIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes letter-dance {
+  0%   { transform: translateY(0)     rotate(0deg);   }
+  25%  { transform: translateY(-18px) rotate(-12deg); }
+  50%  { transform: translateY(-4px)  rotate(10deg);  }
+  75%  { transform: translateY(-14px) rotate(-6deg);  }
+  100% { transform: translateY(0)     rotate(0deg);   }
+}
+
+@keyframes csFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes csSlide {
+  from { opacity: 0; transform: translateY(40px) rotate(-0.6deg); }
+  to   { opacity: 1; transform: translateY(0)    rotate(0deg);    }
+}
+
+/* ─── Page enter ────────────────────────────────────────── */
+
+.page-enter {
+  animation: pageIn 380ms ease both;
+}
+
+/* ─── Card tilt on hover ────────────────────────────────── */
+
+.card-tilt {
+  transition: transform 280ms cubic-bezier(.4, 1.4, .5, 1), box-shadow 280ms ease;
+  box-shadow: 3px 4px 0 rgba(60, 40, 20, 0.10), 6px 8px 18px rgba(60, 40, 20, 0.08);
+}
+.card-tilt:hover {
+  transform: translateY(-3px) rotate(-0.6deg);
+  box-shadow: 5px 6px 0 rgba(60, 40, 20, 0.14), 10px 14px 22px rgba(60, 40, 20, 0.12);
+}
+
+/* ─── Interactive name letters ──────────────────────────── */
+
+.interactive-letter {
+  display: inline-block;
+  position: relative;
+  transition: transform 280ms cubic-bezier(.4, 1.6, .5, 1), color 280ms ease;
+  transform-origin: center bottom;
+  will-change: transform;
+}
+.interactive-letter:hover {
+  transform: translateY(-12px) rotate(-6deg) scale(1.06);
+  color: #7b0619;
+  z-index: 3;
+}
+.letter-wave {
+  transform: translateY(-6px) rotate(-3deg);
+}
+.letter-dance {
+  animation: letter-dance 700ms ease both;
+}
+
+/* ─── Skills hover ──────────────────────────────────────── */
+
+.skill-item {
+  transition: transform 200ms ease;
+  cursor: default;
+}
+.skill-item:hover {
+  transform: translateY(-3px) rotate(-3deg);
+}
+
+/* ─── Links hover ───────────────────────────────────────── */
+
+.link-hover {
+  display: block;
+  transition: transform 160ms ease, color 160ms ease;
+  text-decoration: none;
+  color: inherit;
+}
+.link-hover:hover {
+  transform: translateX(6px);
+  color: #7b0619;
+}
+
+/* ─── Fun fact radial glow ──────────────────────────────── */
+
+.fact-highlight {
+  position: relative;
+  overflow: hidden;
+}
+.fact-highlight::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mx, 50%) var(--my, 50%),
+    rgba(255, 255, 255, 0.4),
+    transparent 40%
+  );
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.fact-highlight:hover::after {
+  opacity: 1;
+}
+
+/* ─── Project card case-study hint ─────────────────────── */
+
+.proj-card-hint {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 12px;
+  letter-spacing: 0.06em;
+  color: #7b0619;
+  font-weight: 700;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+.card-tilt:hover .proj-card-hint {
+  opacity: 1;
+}
+
+/* ─── Fun tile hover ────────────────────────────────────── */
+
+.fun-tile {
+  transition: transform 280ms ease;
+}
+.fun-tile:hover {
+  transform: rotate(-1.4deg) translateY(-4px);
+}
+

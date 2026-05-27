@@ -240,11 +240,11 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
       onKeyDown={project.hasCase ? (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); onClick(); } } : undefined}
     >
       <div className="flex flex-col gap-3">
-        <p className="text-[1.75rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
+        <p className="text-[1.2rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
           {project.body}
         </p>
         {project.image
-          ? <img src={project.image} alt={project.title} style={{ width: project.imageW ?? '100%', height: project.imageH, objectFit: 'cover', border: '1px solid black', display: 'block', aspectRatio: project.imageH ? undefined : '16/9' }} />
+          ? <img src={project.image} alt={project.title} style={{ width: '100%', maxWidth: project.imageW ?? '100%', height: project.imageH, objectFit: 'cover', border: '1px solid black', display: 'block', aspectRatio: project.imageH ? undefined : '16/9' }} />
           : <div style={{ aspectRatio: '16/9', background: 'repeating-linear-gradient(45deg, #efe9d6 0 14px, #e5dec7 14px 28px)', border: '1px solid black' }} />
         }
         {project.hasCase && (
@@ -360,18 +360,17 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
         overflowY: 'auto',
         padding: '40px 16px',
         animation: 'csFade 280ms ease',
-        zoom: `${1 / 0.70}`,
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose(); }}
     >
       <div
+        className="px-4 sm:px-14 pt-8 sm:pt-16 pb-12"
         style={{
           position: 'relative',
           maxWidth: '880px',
           margin: '0 auto',
           backgroundColor: CREAM_BODY,
           border: '1px solid black',
-          padding: '64px 56px 48px',
           fontFamily: FF_INT,
           animation: 'csSlide 380ms cubic-bezier(.3,1.4,.5,1)',
         }}
@@ -398,7 +397,7 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
             {cs.title[0]}
           </div>
           <div>
-            <h2 style={{ margin: 0, fontFamily: FF_BG, fontWeight: 700, fontSize: '44px', letterSpacing: '-0.005em' }}>
+            <h2 style={{ margin: 0, fontFamily: FF_BG, fontWeight: 700, fontSize: 'clamp(24px, 5vw, 44px)', letterSpacing: '-0.005em' }}>
               {cs.title}
             </h2>
             <p style={{ margin: '4px 0 0', fontSize: '17px', color: '#555', fontStyle: 'italic' }}>
@@ -496,7 +495,7 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
             )}
 
             {s.kind === 'compare' && (
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                 {s.cols.map((col, j) => (
                   <div key={j} style={{
                     padding: '16px 18px',
@@ -532,7 +531,7 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
                   </div>
                 )}
                 {s.cards && (
-                  <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     {s.cards.map((card, j) => (
                       <div key={j} style={{ padding: '14px 16px', backgroundColor: CREAM_BODY, border: '1px solid black' }}>
                         <p style={{ margin: '0 0 4px', fontSize: '13px', fontWeight: 600 }}>{card.title}</p>
@@ -603,10 +602,10 @@ export default function Projects() {
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
       {/* Navigation */}
-      <nav className="flex justify-end px-8 pt-4 pb-8 text-[2rem] tracking-[1.6px]">
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <span className="font-bold mr-5">[projects]</span>
+      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
+        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
+        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
+        <span className="font-bold">[projects]</span>
         <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
       </nav>
 

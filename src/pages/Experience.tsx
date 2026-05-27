@@ -36,7 +36,7 @@ function TagLink({ label, target }: { label: string; target: string }) {
   return (
     <button
       onClick={() => document.getElementById(target)?.scrollIntoView({ behavior: 'smooth' })}
-      className="border border-black px-4 py-2 text-[1.75rem] font-bold tracking-[1.5px] hover:opacity-80 transition-opacity"
+      className="border border-black px-3 py-1.5 text-[1.2rem] font-bold tracking-[1px] hover:opacity-80 transition-opacity"
       style={{ fontFamily: FF_BG, backgroundColor: '#f7f3e6' }}
     >
       {label}
@@ -124,7 +124,7 @@ function DraggableImagesArea({ items }: { items: DragItem[] }) {
               borderTop: '1px solid black',
               padding: '5px 10px',
               fontFamily: FF_FIN,
-              fontSize: '1.375rem',
+              fontSize: '0.95rem',
               letterSpacing: '0.6px',
               textAlign: 'center',
               pointerEvents: 'none',
@@ -158,10 +158,10 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
 
   const imageEl = image !== undefined ? (
     imageUrl
-      ? <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <img src={image} alt="" className="bg-[#d9d9d9] border border-black w-1/4 h-1/4 object-cover hover:opacity-80 transition-opacity" style={{ display: 'block' }} />
+      ? <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-full sm:w-auto">
+          <img src={image} alt="" className="bg-[#d9d9d9] border border-black w-full sm:w-40 object-cover hover:opacity-80 transition-opacity" style={{ display: 'block', maxWidth: '100%' }} />
         </a>
-      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black w-1/4 h-1/4 object-cover" />
+      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black w-full sm:w-40 object-cover" style={{ maxWidth: '100%' }} />
   ) : null;
 
   return (
@@ -177,18 +177,18 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
       onHeaderClick={() => setCollapsed(c => !c)}
     >
       <div className="flex items-baseline justify-between mb-4">
-        <p className="font-bold text-[1.75rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
-        {location && <p className="text-[1.5rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
+        <p className="font-bold text-[1.2rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
+        {location && <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
       </div>
-      <div className="flex gap-8 items-start">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-start">
         {imageLeft && imageEl}
-        <p className="flex-1 text-[1.75rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
+        <p className="flex-1 text-[1.2rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
           {description}
         </p>
         {!imageLeft && imageEl}
       </div>
       {linkLabel && (
-        <p className="text-right text-[1.875rem] tracking-[0.6px] mt-4 underline cursor-pointer" style={{ fontFamily: FF_FIN }}>
+        <p className="text-right text-[1.3rem] tracking-[0.6px] mt-4 underline cursor-pointer" style={{ fontFamily: FF_FIN }}>
           {linkLabel}
         </p>
       )}
@@ -252,7 +252,7 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
             <button
               key={t.label}
               onClick={() => setActive(i)}
-              className="px-4 py-2 border border-black text-[1.75rem] font-bold tracking-[1.4px] hover:opacity-90 transition-opacity"
+              className="px-3 py-1.5 border border-black text-[1.2rem] font-bold tracking-[1.4px] hover:opacity-90 transition-opacity"
               style={{
                 fontFamily: FF_INT,
                 backgroundColor: i === active ? '#f7f3e6' : '#bcd6c7',
@@ -270,26 +270,26 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
     >
       {role && (
         <div className="flex items-baseline justify-between mb-4">
-          <p className="font-bold text-[1.75rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
-          {location && <p className="text-[1.5rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
+          <p className="font-bold text-[1.2rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
+          {location && <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
         </div>
       )}
-      <p className="text-[1.75rem] tracking-[1.4px] leading-snug whitespace-pre-line" style={{ fontFamily: FF_INT }}>
+      <p className="text-[1.2rem] tracking-[1.4px] leading-snug whitespace-pre-line" style={{ fontFamily: FF_INT }}>
         {tab.description}
       </p>
-      {tab.draggableImages && <DraggableImagesArea items={tab.draggableImages} />}
+      {tab.draggableImages && <div className="hidden sm:block"><DraggableImagesArea items={tab.draggableImages} /></div>}
       {!tab.draggableImages?.length && tab.images && (
         <div className="flex gap-6 justify-center mt-8 flex-wrap">
           {tab.images.map((img, i) => (
             <div key={i} className="flex flex-col items-center">
               {img.url
                 ? <a href={img.url} target="_blank" rel="noopener noreferrer" className="block">
-                    <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220 }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
+                    <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
                   </a>
-                : <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220 }} className="object-cover border border-black bg-[#d9d9d9]" />
+                : <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9]" />
               }
               {img.caption && (
-                <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.875rem', letterSpacing: '0.6px', textDecoration: img.url ? 'underline' : 'none', cursor: img.url ? 'pointer' : 'default' }}>
+                <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.3rem', letterSpacing: '0.6px', textDecoration: img.url ? 'underline' : 'none', cursor: img.url ? 'pointer' : 'default' }}>
                   {img.caption}
                 </p>
               )}
@@ -300,13 +300,13 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
       {!tab.draggableImages?.length && !tab.images && tab.image !== undefined && (
         <div className="flex flex-col items-center mt-8">
           {tab.imageUrl
-            ? <a href={tab.imageUrl} target="_blank" rel="noopener noreferrer" className="block">
-                <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300 }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
+            ? <a href={tab.imageUrl} target="_blank" rel="noopener noreferrer" className="block max-w-full">
+                <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
               </a>
-            : <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300 }} className="object-cover border border-black bg-[#d9d9d9]" />
+            : <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9]" />
           }
           {tab.imageCaption && (
-            <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.875rem', letterSpacing: '0.6px', textDecoration: tab.imageUrl ? 'underline' : 'none', cursor: tab.imageUrl ? 'pointer' : 'default' }}>
+            <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.3rem', letterSpacing: '0.6px', textDecoration: tab.imageUrl ? 'underline' : 'none', cursor: tab.imageUrl ? 'pointer' : 'default' }}>
               {tab.imageCaption}
             </p>
           )}
@@ -315,11 +315,11 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
       {(tab.location || tab.date) && (
         <div className="flex items-end justify-between mt-6">
           {tab.location
-            ? <p className="text-[1.5rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{tab.location}</p>
+            ? <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{tab.location}</p>
             : <span />}
           {tab.date && (
-            <div className="px-4 py-2 border border-black rounded-[10px]" style={{ backgroundColor: '#6fbda7' }}>
-              <span className="font-bold text-[1.5rem] tracking-[0.48px]" style={{ fontFamily: FF_BG }}>
+            <div className="px-3 py-1.5 border border-black rounded-[10px]" style={{ backgroundColor: '#6fbda7' }}>
+              <span className="font-bold text-[1.05rem] tracking-[0.48px]" style={{ fontFamily: FF_BG }}>
                 {tab.date}
               </span>
             </div>
@@ -336,28 +336,28 @@ export default function Experience() {
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
       {/* Navigation */}
-      <nav className="flex justify-end px-8 pt-4 pb-8 text-[2rem] tracking-[1.6px]">
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <span className="font-bold mr-5">[experience]</span>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
+      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
+        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
+        <span className="font-bold">[experience]</span>
+        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
         <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
       </nav>
 
       <div className="px-6 sm:px-10 pb-16 max-w-[1440px] mx-auto space-y-6">
 
         {/* ── Index links — centered ── */}
-        <div className="flex gap-4">
+        <div className="flex flex-col sm:flex-row gap-4">
             {/* Internships */}
-            <div className="flex-1.5 border border-black p-2" style={{ backgroundColor: '#cfdfb1' }}>
+            <div className="flex-[1.5] border border-black p-2" style={{ backgroundColor: '#cfdfb1' }}>
               <div
-                className="border border-black min-h-12 flex items-center px-5 mb-3"
+                className="border border-black min-h-10 sm:min-h-12 flex items-center px-3 sm:px-5 mb-3"
                 style={{ backgroundColor: '#90b659' }}
               >
-                <span className="font-bold text-[1.875rem] tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>
+                <span className="font-bold text-[1rem] sm:text-[1.3rem] tracking-[0.5px] sm:tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>
                   INTERNSHIPS
                 </span>
               </div>
-              <div className="flex gap-2 justify-center">
+              <div className="flex flex-wrap gap-2 justify-center">
                 <TagLink label="GOOGLE" target="google" />
                 <TagLink label="PORTICO WELLNESS" target="portico" />
                 <TagLink label="SCOWTT" target="scowtt" />
@@ -367,14 +367,14 @@ export default function Experience() {
             {/* Professional Experience */}
             <div className="flex-1 border border-black p-2" style={{ backgroundColor: '#bcd6c7' }}>
               <div
-                className="border border-black min-h-12 flex items-center px-5 mb-3"
+                className="border border-black min-h-10 sm:min-h-12 flex items-center px-3 sm:px-5 mb-3"
                 style={{ backgroundColor: '#6fbda7' }}
               >
-                <span className="font-bold text-[1.875rem] tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>
+                <span className="font-bold text-[1rem] sm:text-[1.3rem] tracking-[0.5px] sm:tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>
                   PROFESSIONAL EXPERIENCE
                 </span>
               </div>
-              <div className="flex gap-2 justify-center">
+              <div className="flex flex-wrap gap-2 justify-center">
                 <TagLink label="CTC" target="ctc" />
                 <TagLink label="LAVALAB" target="lavalab" />
                 <TagLink label="RESEARCH" target="research" />

@@ -68,24 +68,24 @@ export function CardSection({
     >
       {/* ── Header row — clickable when onHeaderClick provided ── */}
       <div
-        className={`flex items-stretch gap-2 ${headerMargin}`}
+        className={`flex items-start gap-2 ${headerMargin}`}
         onClick={onHeaderClick}
         style={onHeaderClick ? { cursor: 'pointer', userSelect: 'none' } : undefined}
       >
         <div
-          className="w-12 h-12 shrink-0 border border-black flex items-center justify-center"
+          className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 border border-black flex items-center justify-center"
           style={{ backgroundColor: squareFill }}
         >
           {imageSrc && (
-            <img src={imageSrc} alt={imageAlt} className="w-9 h-9 object-contain" />
+            <img src={imageSrc} alt={imageAlt} className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
           )}
         </div>
         <div
-          className="flex-1 h-12 border border-black flex items-center px-4"
+          className="flex-1 min-h-10 sm:min-h-12 border border-black flex items-center px-3 sm:px-4 py-1"
           style={{ backgroundColor: headerBg }}
         >
           <h2
-            className="font-bold text-[2rem] tracking-[1.6px]"
+            className="font-bold text-[1.05rem] sm:text-[1.4rem] tracking-[0.5px] sm:tracking-[1.6px]"
             style={{ fontFamily: FF_BG }}
           >
             {title}
@@ -109,11 +109,11 @@ export function CardSection({
         </div>
         {date && (
           <div
-            className="h-12 px-4 border border-black flex items-center"
+            className="min-h-10 sm:min-h-12 px-2 sm:px-4 border border-black flex items-center"
             style={{ backgroundColor: dateFill }}
           >
             <span
-              className="font-bold text-[1.5rem] tracking-[0.48px] whitespace-nowrap"
+              className="font-bold text-[0.75rem] sm:text-[1.05rem] tracking-[0.3px] sm:tracking-[0.48px] whitespace-nowrap"
               style={{ fontFamily: FF_BG }}
             >
               {date}

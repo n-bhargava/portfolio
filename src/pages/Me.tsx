@@ -73,7 +73,7 @@ function InteractiveName({ text }: { text: string }) {
         cursor: 'pointer',
         userSelect: 'none',
         fontFamily: "'Akshar', sans-serif",
-        fontSize: 'clamp(2.75rem, 7.2vw, 6rem)',
+        fontSize: 'clamp(1.9rem, 5vw, 4.2rem)',
         fontWeight: 700,
         lineHeight: 1,
         letterSpacing: '-0.005em',
@@ -126,10 +126,10 @@ export default function Me() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif" }} className="page-enter">
       {/* ── Navigation ── */}
-      <nav className="flex justify-end px-8 pt-4 pb-8 text-[2rem] tracking-[1.6px]">
-        <span className="font-bold mr-5">[me!]</span>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
+      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
+        <span className="font-bold">[me!]</span>
+        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
+        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
         <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
       </nav>
 
@@ -139,7 +139,7 @@ export default function Me() {
         <p
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: '40px',
+            fontSize: 'clamp(18px, 4.5vw, 28px)',
             color: '#444',
             letterSpacing: '0.04em',
             marginTop: '6px',
@@ -150,7 +150,7 @@ export default function Me() {
         <p
           style={{
             fontFamily: "'Inter', sans-serif",
-            fontSize: '25px',
+            fontSize: 'clamp(13px, 2.5vw, 18px)',
             color: '#444',
             letterSpacing: '0.04em',
           }}
@@ -165,7 +165,7 @@ export default function Me() {
         {/* Welcome */}
         <CardSection title="welcome!!">
           <div className="space-y-6">
-            <p className="text-[1.75rem] tracking-[1.4px] leading-snug">
+            <p className="text-[1.2rem] tracking-[1.4px] leading-snug">
               I got into tech because I loved making things that felt alive. Tiny websites,
               interactive experiments, little worlds people could explore. That sense of curiosity
               and childlike creativity still shapes the way I build today.
@@ -173,7 +173,7 @@ export default function Me() {
             <div className="flex flex-col lg:flex-row gap-8 items-start">
               {/* Headshot with easter egg */}
               <div
-                className="shrink-0 w-[371px] max-w-full"
+                className="shrink-0 w-full sm:w-[260px] lg:w-[371px]"
                 style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', cursor: 'pointer', aspectRatio: '1/1' }}
                 onClick={() => { setEasterOn(e => !e); setEggCount(c => c + 1); }}
                 title="psst, click me"
@@ -193,7 +193,7 @@ export default function Me() {
                   color: '#f7f3e6',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   fontFamily: "'Bricolage Grotesque', sans-serif",
-                  fontWeight: 700, fontSize: '20px',
+                  fontWeight: 700, fontSize: '14px',
                   opacity: easterOn ? 1 : 0,
                   transition: 'opacity 200ms ease',
                   textAlign: 'center', padding: '16px',
@@ -202,7 +202,7 @@ export default function Me() {
                 </div>
               </div>
 
-              <div className="space-y-6 flex-1 text-[1.75rem] tracking-[1.4px] leading-snug">
+              <div className="space-y-6 flex-1 text-[1.2rem] tracking-[1.4px] leading-snug">
                 <p>
                   This little corner of the internet is a collection of the things I care about
                   most: thoughtful products, playful design, and technology that feels intuitive
@@ -228,13 +228,13 @@ export default function Me() {
             {/* Links */}
             <div className="border border-black p-5">
               <h3
-                className="font-bold text-[2rem] tracking-[1.6px] mb-3"
+                className="font-bold text-[1.4rem] tracking-[1.6px] mb-3"
                 style={{ fontFamily: "'Finlandica', sans-serif" }}
               >
                 links
               </h3>
               <div
-                className="space-y-1 text-[2rem] tracking-[0.8px]"
+                className="space-y-1 text-[1.4rem] tracking-[0.8px]"
                 style={{ fontFamily: "'Finlandica', sans-serif" }}
               >
                 {links.map(({ label, href }) => (
@@ -253,11 +253,11 @@ export default function Me() {
                   {['f', 'u', 'n'].map((ch, i) => (
                     <div
                       key={i}
-                      className="w-9 h-9 rounded-full flex items-center justify-center mx-0.5"
+                      className="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex items-center justify-center mx-0.5"
                       style={{ backgroundColor: '#c4a882', marginTop: FUN_OFFSETS[i] + 'px' }}
                     >
                       <span
-                        className="font-bold text-[1.25rem] leading-none"
+                        className="font-bold text-[0.75rem] sm:text-[0.875rem] leading-none"
                         style={{ fontFamily: "'Akshar', sans-serif", color: '#f7f3e6' }}
                       >
                         {ch}
@@ -269,11 +269,11 @@ export default function Me() {
                   {['f', 'a', 'c', 't', 's'].map((ch, i) => (
                     <div
                       key={i}
-                      className="w-9 h-9 rounded-full flex items-center justify-center mx-0.5"
+                      className="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex items-center justify-center mx-0.5"
                       style={{ backgroundColor: '#7c5642', marginTop: FACTS_OFFSETS[i] + 'px' }}
                     >
                       <span
-                        className="font-bold text-[1.25rem] leading-none"
+                        className="font-bold text-[0.75rem] sm:text-[0.875rem] leading-none"
                         style={{ fontFamily: "'Akshar', sans-serif", color: '#f1eddf' }}
                       >
                         {ch}
@@ -284,13 +284,13 @@ export default function Me() {
               </div>
 
               <p
-                className="font-bold text-[1.875rem] tracking-[1.5px] mb-4"
+                className="font-bold text-[1.3rem] tracking-[1.5px] mb-4"
                 style={{ color: '#7b0619' }}
               >
                 currently:
               </p>
 
-              <div className="space-y-4 text-[1.75rem] leading-snug tracking-[0.32px]">
+              <div className="space-y-4 text-[1.2rem] leading-snug tracking-[0.32px]">
                 {/* into */}
                 <div
                   className="p-3 fact-highlight"
@@ -355,16 +355,16 @@ export default function Me() {
 
             {/* Skills */}
             <CardSection title="skills" noTilt>
-              <div className="grid grid-cols-5 gap-4 py-4">
+              <div className="grid grid-cols-4 sm:grid-cols-5 gap-3 sm:gap-4 py-4">
                 {skills.map(({ name, src, rotation }) => (
-                  <div key={name} className="flex flex-col items-center gap-3 skill-item">
+                  <div key={name} className="flex flex-col items-center gap-2 sm:gap-3 skill-item">
                     <div
-                      className="w-[clamp(48px,7vw,112px)] h-[clamp(48px,7vw,112px)]"
+                      className="w-[clamp(28px,6vw,78px)] h-[clamp(28px,6vw,78px)]"
                       style={{ transform: `rotate(${rotation}deg)` }}
                     >
                       <img src={src} alt={name} className="w-full h-full object-contain" />
                     </div>
-                    <p className="text-[1.875rem] tracking-[1.5px] text-center">{name}</p>
+                    <p className="text-[0.65rem] sm:text-[1.3rem] tracking-[0.3px] sm:tracking-[1.5px] text-center">{name}</p>
                   </div>
                 ))}
               </div>
@@ -374,13 +374,13 @@ export default function Me() {
             <CardSection title="education">
               <div className="space-y-8">
                 <div>
-                  <p className="text-[1.875rem] tracking-[1.5px] leading-snug">
+                  <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
                     University of Southern California
                   </p>
-                  <p className="text-[1.875rem] tracking-[1.5px] leading-snug">
+                  <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
                     {`>> Computer Science / Business Administration (B.S.)`}
                   </p>
-                  <ul className="list-disc pl-8 text-[1.625rem] tracking-[1.3px] space-y-1 mt-2">
+                  <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
                     <li>
                       GPA: 3.86
                     </li>
@@ -392,10 +392,10 @@ export default function Me() {
                   </ul>
                 </div>
                 <div>
-                  <p className="text-[1.875rem] tracking-[1.5px] leading-snug">
+                  <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
                     Vista Del Lago High School
                   </p>
-                  <ul className="list-disc pl-8 text-[1.625rem] tracking-[1.3px] space-y-1 mt-2">
+                  <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
                     <li>GPA (UW/W): 4.0/4.4</li>
                     <li>
                       Courses: AP CSA, AP CSP, AP Calculus, AP Physics, AP Chemistry, AP Statistics

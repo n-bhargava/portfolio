@@ -101,10 +101,10 @@ export default function Fun() {
   const navigate = useNavigate();
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
-      <nav className="flex justify-end px-8 pt-4 pb-8 text-[2rem] tracking-[1.6px]">
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <button className="mr-5 hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
+      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
+        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
+        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
+        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
         <span className="font-bold">[playground]</span>
       </nav>
 

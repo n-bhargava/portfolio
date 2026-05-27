@@ -174,7 +174,7 @@ export default function Me() {
             <div className="flex flex-col lg:flex-row gap-8 items-start">
               {/* Headshot with easter egg */}
               <div
-                className="shrink-0 w-full sm:w-[260px] lg:w-[371px]"
+                className="shrink-0 w-[160px] sm:w-[200px] lg:w-[220px] mx-auto lg:mx-0"
                 style={{ position: 'relative', borderRadius: '10px', overflow: 'hidden', cursor: 'pointer', aspectRatio: '1/1' }}
                 onClick={() => { setEasterOn(e => !e); setEggCount(c => c + 1); }}
                 title="psst, click me"

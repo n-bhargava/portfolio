@@ -244,7 +244,7 @@ function ProjectCard({ project, onClick }: { project: Project; onClick: () => vo
           {project.body}
         </p>
         {project.image
-          ? <img src={project.image} alt={project.title} style={{ width: '100%', maxWidth: project.imageW ?? '100%', height: project.imageH, objectFit: 'cover', border: '1px solid black', display: 'block', aspectRatio: project.imageH ? undefined : '16/9' }} />
+          ? <img src={project.image} alt={project.title} style={{ width: '100%', aspectRatio: project.imageW && project.imageH ? `${project.imageW}/${project.imageH}` : '16/9', height: 'auto', objectFit: 'cover', border: '1px solid black', display: 'block' }} />
           : <div style={{ aspectRatio: '16/9', background: 'repeating-linear-gradient(45deg, #efe9d6 0 14px, #e5dec7 14px 28px)', border: '1px solid black' }} />
         }
         {project.hasCase && (

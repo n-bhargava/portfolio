@@ -158,10 +158,10 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
 
   const imageEl = image !== undefined ? (
     imageUrl
-      ? <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="shrink-0 w-full sm:w-auto">
-          <img src={image} alt="" className="bg-[#d9d9d9] border border-black w-full sm:w-40 object-cover hover:opacity-80 transition-opacity" style={{ display: 'block', maxWidth: '100%' }} />
+      ? <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
+          <img src={image} alt="" className="bg-[#d9d9d9] border border-black object-cover hover:opacity-80 transition-opacity" style={{ display: 'block', width: '120px', height: '120px' }} />
         </a>
-      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black w-full sm:w-40 object-cover" style={{ maxWidth: '100%' }} />
+      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black object-cover" style={{ width: '120px', height: '120px' }} />
   ) : null;
 
   return (
@@ -180,7 +180,7 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
         <p className="font-bold text-[1.2rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
         {location && <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
       </div>
-      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-start">
+      <div className="flex gap-4 sm:gap-8 items-start">
         {imageLeft && imageEl}
         <p className="flex-1 text-[1.2rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
           {description}
@@ -283,10 +283,10 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
           {tab.images.map((img, i) => (
             <div key={i} className="flex flex-col items-center">
               {img.url
-                ? <a href={img.url} target="_blank" rel="noopener noreferrer" className="block">
-                    <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
+                ? <a href={img.url} target="_blank" rel="noopener noreferrer" className="block" style={{ maxWidth: '100%' }}>
+                    <img src={img.src} alt="" style={{ width: img.w ?? 300, maxWidth: '100%', aspectRatio: `${img.w ?? 300}/${img.h ?? 220}`, height: 'auto', objectFit: 'cover', display: 'block' }} className="border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
                   </a>
-                : <img src={img.src} alt="" style={{ width: img.w ?? 300, height: img.h ?? 220, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9]" />
+                : <img src={img.src} alt="" style={{ width: img.w ?? 300, maxWidth: '100%', aspectRatio: `${img.w ?? 300}/${img.h ?? 220}`, height: 'auto', objectFit: 'cover', display: 'block' }} className="border border-black bg-[#d9d9d9]" />
               }
               {img.caption && (
                 <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.3rem', letterSpacing: '0.6px', textDecoration: img.url ? 'underline' : 'none', cursor: img.url ? 'pointer' : 'default' }}>
@@ -300,10 +300,10 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
       {!tab.draggableImages?.length && !tab.images && tab.image !== undefined && (
         <div className="flex flex-col items-center mt-8">
           {tab.imageUrl
-            ? <a href={tab.imageUrl} target="_blank" rel="noopener noreferrer" className="block max-w-full">
-                <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
+            ? <a href={tab.imageUrl} target="_blank" rel="noopener noreferrer" style={{ maxWidth: '100%', display: 'block' }}>
+                <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, maxWidth: '100%', aspectRatio: `${tab.imageW ?? 400}/${tab.imageH ?? 300}`, height: 'auto', objectFit: 'cover', display: 'block' }} className="border border-black bg-[#d9d9d9] hover:opacity-80 transition-opacity" />
               </a>
-            : <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, height: tab.imageH ?? 300, maxWidth: '100%' }} className="object-cover border border-black bg-[#d9d9d9]" />
+            : <img src={tab.image} alt="" style={{ width: tab.imageW ?? 400, maxWidth: '100%', aspectRatio: `${tab.imageW ?? 400}/${tab.imageH ?? 300}`, height: 'auto', objectFit: 'cover', display: 'block' }} className="border border-black bg-[#d9d9d9]" />
           }
           {tab.imageCaption && (
             <p className="text-center mt-2 whitespace-pre-line" style={{ fontFamily: FF_FIN, fontSize: '1.3rem', letterSpacing: '0.6px', textDecoration: tab.imageUrl ? 'underline' : 'none', cursor: tab.imageUrl ? 'pointer' : 'default' }}>

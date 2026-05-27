@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardSection } from '../components/CardSection';
-import annotators from '../../public/annotators.pdf'
+import annotators from '../assets/annotators.pdf'
 import campfire from '../assets/campfire.svg'
 import datebetter from '../assets/datebetter.svg'
 import fccw from '../assets/fccw.svg'
@@ -16,7 +16,7 @@ import paper from '../assets/paper.svg'
 import poster from '../assets/poster.svg'
 import team from '../assets/team.svg'
 import vpaper from '../assets/vpaper.svg'
-import vryan from '../../public/vRyan.pdf'
+import vryan from '../assets/vRyan.pdf'
 
 const IMG_TMG     = 'https://www.figma.com/api/mcp/asset/93550f64-0fc4-45b4-9e61-c813acd9342d';
 const IMG_USC     = 'https://www.figma.com/api/mcp/asset/c7e3b6c4-7fda-4f60-b214-64511f0927a9';

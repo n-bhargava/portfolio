@@ -9,6 +9,7 @@ import java from '../assets/java.svg'
 import javascript from '../assets/javascript.svg'
 import python from '../assets/python.svg'
 import react from '../assets/react.svg'
+import resume from '../assets/resume.pdf'
 import swift from '../assets/swift.svg'
 import typescript from '../assets/typescript.svg'
 import vuejs from '../assets/vuejs.svg'
@@ -29,7 +30,7 @@ const skills = [
 const links = [
   {
     label: 'resume',
-    href: './resume.pdf',
+    href: resume,
   },
   {
     label: 'linkedin',

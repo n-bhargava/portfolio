@@ -114,6 +114,8 @@ export default function Me() {
   const navigate = useNavigate();
   const [easterOn, setEasterOn] = useState(false);
   const [eggCount, setEggCount] = useState(0);
+  const [uscOpen, setUscOpen] = useState(false);
+  const [vdlOpen, setVdlOpen] = useState(false);
 
   const easterText =
     eggCount < 3 ? 'hi! 🌱' : eggCount < 6 ? 'still here :)' : 'ok ok stop poking';
@@ -375,38 +377,58 @@ export default function Me() {
             <CardSection title="education">
               <div className="space-y-8">
                 <div>
-                  <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
-                    University of Southern California
-                  </p>
+                  <div className="flex items-baseline gap-3">
+                    <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
+                      University of Southern California
+                    </p>
+                    <button
+                      onClick={() => setUscOpen(o => !o)}
+                      className="hover:opacity-70 transition-opacity shrink-0"
+                      style={{ fontFamily: "'Finlandica', sans-serif", fontSize: '1.1rem', letterSpacing: '1.4px' }}
+                    >
+                      {uscOpen ? '[-]' : '[+]'}
+                    </button>
+                  </div>
                   <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
                     {`>> Computer Science / Business Administration (B.S.)`}
                   </p>
-                  <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
-                    <li>
-                      GPA: 3.86
-                    </li>
-                    <li>
-                      Courses: Introduction to Programming, Discrete Mathematics, Data Structures
-                      and Algorithms, Introduction to Information Security, Applied Python
-                    </li>
-                    <li>Achievements: Dean's List (6x)</li>
-                  </ul>
+                  {uscOpen && (
+                    <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
+                      <li>GPA: 3.86</li>
+                      <li>
+                        Courses: Introduction to Programming, Discrete Mathematics, Data Structures
+                        and Algorithms, Introduction to Information Security, Applied Python
+                      </li>
+                      <li>Achievements: Dean's List (6x)</li>
+                    </ul>
+                  )}
                 </div>
                 <div>
-                  <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
-                    Vista Del Lago High School
-                  </p>
-                  <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
-                    <li>GPA (UW/W): 4.0/4.4</li>
-                    <li>
-                      Courses: AP CSA, AP CSP, AP Calculus, AP Physics, AP Chemistry, AP Statistics
-                    </li>
-                    <li>
-                      Involvement: UNICEF Club (President), National Honors Society (NHS),
-                      California Scholarship Federation (CSF)
-                    </li>
-                    <li>Achievements: Valedictorian</li>
-                  </ul>
+                  <div className="flex items-baseline gap-3">
+                    <p className="text-[1.3rem] tracking-[1.5px] leading-snug">
+                      Vista Del Lago High School
+                    </p>
+                    <button
+                      onClick={() => setVdlOpen(o => !o)}
+                      className="hover:opacity-70 transition-opacity shrink-0"
+                      style={{ fontFamily: "'Finlandica', sans-serif", fontSize: '1.1rem', letterSpacing: '1.4px' }}
+                    >
+                      {vdlOpen ? '[-]' : '[+]'}
+                    </button>
+                  </div>
+                  {vdlOpen && (
+                    <ul className="list-disc pl-6 sm:pl-8 text-[1.15rem] tracking-[1.3px] space-y-1 mt-2">
+                      <li>GPA (UW/W): 4.0/4.4</li>
+                      <li>
+                        Courses: AP CSA, AP CSP, AP Calculus, AP Physics, AP Chemistry, AP Statistics
+                      </li>
+                      <li>
+                        Involvement: UNICEF Club (President), National Honors Society (NHS),
+                        California Scholarship Federation (CSF)
+                      </li>
+                      <li>Achievements: Valedictorian</li>
+                    </ul>
+                  )}
                 </div>
               </div>
             </CardSection>

@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CardSection } from '../components/CardSection';
 import annotators from '../assets/annotators.pdf'
@@ -18,13 +18,13 @@ import team from '../assets/team.svg'
 import vpaper from '../assets/vpaper.svg'
 import vryan from '../assets/vRyan.pdf'
 
-const IMG_TMG     = 'https://www.figma.com/api/mcp/asset/93550f64-0fc4-45b4-9e61-c813acd9342d';
-const IMG_USC     = 'https://www.figma.com/api/mcp/asset/c7e3b6c4-7fda-4f60-b214-64511f0927a9';
-const IMG_LAVALAB = 'https://www.figma.com/api/mcp/asset/4de4f249-1e1e-4133-8407-e1f90e3083f5';
-const IMG_CTC     = 'https://www.figma.com/api/mcp/asset/c10b24a6-30f8-49b3-9f02-09c82b4b39ea';
-const IMG_PORTICO = 'https://www.figma.com/api/mcp/asset/b5cf03fd-f22a-44ec-9039-653be58eadb2';
-const IMG_SCOWTT  = 'https://www.figma.com/api/mcp/asset/cdc0aba6-a9a2-4a72-b246-b3bdaa75e3ff';
-const IMG_GOOGLE  = 'https://www.figma.com/api/mcp/asset/d071b0a8-e2d2-4a42-a986-d9c78b7c8e2f';
+import IMG_TMG     from '../assets/tmglogo.svg';
+import IMG_USC     from '../assets/usclogo.svg';
+import IMG_LAVALAB from '../assets/lavalablogo.svg';
+import IMG_CTC     from '../assets/ctclogo.svg';
+import IMG_PORTICO from '../assets/porticologo.svg';
+import IMG_SCOWTT  from '../assets/scowttlogo.svg';
+import IMG_GOOGLE  from '../assets/googlelogo.svg';
 
 
 const FF_BG  = "'Bricolage Grotesque', sans-serif";
@@ -54,86 +54,100 @@ function DraggableImagesArea({ items }: { items: DragItem[] }) {
   const [positions, setPositions] = useState(() => items.map(d => ({ x: d.initX, y: d.initY })));
   const [topIdx, setTopIdx] = useState<number | null>(null);
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [scale, setScale] = useState(1);
   const dragging = useRef<{ idx: number } | null>(null);
   const lastClient = useRef({ x: 0, y: 0 });
-  const containerRef = useRef<HTMLDivElement>(null);
+  const outerRef = useRef<HTMLDivElement>(null);
 
+  const designW = Math.max(...items.map(d => d.initX + d.w)) + 20;
   const containerH = Math.max(260, Math.max(...items.map(d => d.h)) + 40);
   const clamp = (val: number, min: number, max: number) => Math.min(Math.max(val, min), max);
-  const getZoom = () => parseFloat(getComputedStyle(document.body).zoom || '1') || 1;
+
+  useEffect(() => {
+    const el = outerRef.current;
+    if (!el) return;
+    const obs = new ResizeObserver(entries => {
+      const w = entries[0].contentRect.width;
+      setScale(Math.min(1, w / designW));
+    });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [designW]);
 
   return (
     <div
-      ref={containerRef}
-      style={{ position: 'relative', height: containerH, marginTop: 28, userSelect: 'none', overflow: 'hidden' }}
+      ref={outerRef}
+      style={{ position: 'relative', height: containerH * scale, marginTop: 28, userSelect: 'none', overflow: 'hidden' }}
       onMouseMove={(e) => {
         if (!dragging.current) return;
-        const zoom = getZoom();
-        const dx = (e.clientX - lastClient.current.x) / zoom;
-        const dy = (e.clientY - lastClient.current.y) / zoom;
+        const cssZoom = parseFloat(getComputedStyle(document.body).zoom || '1') || 1;
+        const effectiveScale = cssZoom * scale;
+        const dx = (e.clientX - lastClient.current.x) / effectiveScale;
+        const dy = (e.clientY - lastClient.current.y) / effectiveScale;
         lastClient.current = { x: e.clientX, y: e.clientY };
         const { idx } = dragging.current;
         const item = items[idx];
-        const containerW = containerRef.current?.offsetWidth ?? 800;
         setPositions(prev => prev.map((p, i) => i === idx ? {
-          x: clamp(p.x + dx, 0, Math.max(0, containerW - item.w)),
+          x: clamp(p.x + dx, 0, Math.max(0, designW - item.w)),
           y: clamp(p.y + dy, 0, Math.max(0, containerH - item.h)),
         } : p));
       }}
       onMouseUp={() => { dragging.current = null; }}
       onMouseLeave={() => { dragging.current = null; setHoveredIdx(null); }}
     >
-      {items.map((item, i) => (
-        <div
-          key={i}
-          onMouseDown={(e) => {
-            e.preventDefault();
-            setTopIdx(i);
-            setHoveredIdx(null);
-            lastClient.current = { x: e.clientX, y: e.clientY };
-            dragging.current = { idx: i };
-          }}
-          onMouseEnter={() => { if (!dragging.current) setHoveredIdx(i); }}
-          onMouseLeave={() => setHoveredIdx(null)}
-          style={{
-            position: 'absolute',
-            left: positions[i].x,
-            top: positions[i].y,
-            width: item.w,
-            height: item.h,
-            border: '1px solid black',
-            backgroundColor: '#d9d9d9',
-            overflow: 'hidden',
-            transform: `rotate(${item.rot}deg)`,
-            cursor: 'grab',
-            zIndex: topIdx === i ? 10 : i + 1,
-            boxShadow: topIdx === i
-              ? '4px 6px 0 rgba(0,0,0,0.16), 8px 14px 24px rgba(0,0,0,0.14)'
-              : '1px 3px 0 rgba(0,0,0,0.08)',
-            transition: 'box-shadow 120ms ease',
-          }}
-        >
-          {item.src && (
-            <img src={item.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
-          )}
-          {item.caption && hoveredIdx === i && (
-            <div style={{
+      <div style={{ position: 'absolute', width: designW, height: containerH, transform: `scale(${scale})`, transformOrigin: 'top left' }}>
+        {items.map((item, i) => (
+          <div
+            key={i}
+            onMouseDown={(e) => {
+              e.preventDefault();
+              setTopIdx(i);
+              setHoveredIdx(null);
+              lastClient.current = { x: e.clientX, y: e.clientY };
+              dragging.current = { idx: i };
+            }}
+            onMouseEnter={() => { if (!dragging.current) setHoveredIdx(i); }}
+            onMouseLeave={() => setHoveredIdx(null)}
+            style={{
               position: 'absolute',
-              bottom: 0, left: 0, right: 0,
-              backgroundColor: '#f7f3e6',
-              borderTop: '1px solid black',
-              padding: '5px 10px',
-              fontFamily: FF_FIN,
-              fontSize: '0.95rem',
-              letterSpacing: '0.6px',
-              textAlign: 'center',
-              pointerEvents: 'none',
-            }}>
-              {item.caption}
-            </div>
-          )}
-        </div>
-      ))}
+              left: positions[i].x,
+              top: positions[i].y,
+              width: item.w,
+              height: item.h,
+              border: '1px solid black',
+              backgroundColor: '#d9d9d9',
+              overflow: 'hidden',
+              transform: `rotate(${item.rot}deg)`,
+              cursor: 'grab',
+              zIndex: topIdx === i ? 10 : i + 1,
+              boxShadow: topIdx === i
+                ? '4px 6px 0 rgba(0,0,0,0.16), 8px 14px 24px rgba(0,0,0,0.14)'
+                : '1px 3px 0 rgba(0,0,0,0.08)',
+              transition: 'box-shadow 120ms ease',
+            }}
+          >
+            {item.src && (
+              <img src={item.src} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', pointerEvents: 'none' }} />
+            )}
+            {item.caption && hoveredIdx === i && (
+              <div style={{
+                position: 'absolute',
+                bottom: 0, left: 0, right: 0,
+                backgroundColor: '#f7f3e6',
+                borderTop: '1px solid black',
+                padding: '5px 10px',
+                fontFamily: FF_FIN,
+                fontSize: '0.95rem',
+                letterSpacing: '0.6px',
+                textAlign: 'center',
+                pointerEvents: 'none',
+              }}>
+                {item.caption}
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -151,17 +165,18 @@ interface InternProps {
   image?: string;
   imageUrl?: string;
   imageLeft?: boolean;
+  websiteUrl?: string;
 }
 
-function InternCard({ id, logo, title, date, role, location, description, linkLabel, image, imageUrl, imageLeft }: InternProps) {
+function InternCard({ id, logo, title, date, role, location, description, linkLabel, image, imageUrl, imageLeft, websiteUrl }: InternProps) {
   const [collapsed, setCollapsed] = useState(false);
 
   const imageEl = image !== undefined ? (
     imageUrl
       ? <a href={imageUrl} target="_blank" rel="noopener noreferrer" className="shrink-0">
-          <img src={image} alt="" className="bg-[#d9d9d9] border border-black object-cover hover:opacity-80 transition-opacity" style={{ display: 'block', width: '120px', height: '120px' }} />
+          <img src={image} alt="" className="bg-[#d9d9d9] border border-black hover:opacity-80 transition-opacity" style={{ display: 'block', width: '180px', height: 'auto' }} />
         </a>
-      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black object-cover" style={{ width: '120px', height: '120px' }} />
+      : <img src={image} alt="" className="shrink-0 bg-[#d9d9d9] border border-black" style={{ width: '180px', height: 'auto' }} />
   ) : null;
 
   return (
@@ -170,6 +185,7 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
       title={title}
       date={date}
       imageSrc={logo}
+      websiteUrl={websiteUrl}
       outerBg="#cfdfb1"
       headerBg="#90b659"
       dateBg="#619136"
@@ -180,7 +196,7 @@ function InternCard({ id, logo, title, date, role, location, description, linkLa
         <p className="font-bold text-[1.2rem] tracking-[1.4px]" style={{ fontFamily: FF_INT }}>{role}</p>
         {location && <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{location}</p>}
       </div>
-      <div className="flex gap-4 sm:gap-8 items-start">
+      <div className="flex flex-col sm:flex-row gap-4 sm:gap-8 items-start">
         {imageLeft && imageEl}
         <p className="flex-1 text-[1.2rem] tracking-[1.4px] leading-snug" style={{ fontFamily: FF_INT }}>
           {description}
@@ -227,9 +243,10 @@ interface ProfProps {
   role?: string;
   location?: string;
   tabs: ProfTab[];
+  websiteUrl?: string;
 }
 
-function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
+function ProfCard({ id, logo, title, date, role, location, tabs, websiteUrl }: ProfProps) {
   const [active, setActive] = useState(0);
   const [collapsed, setCollapsed] = useState(false);
   const tab = tabs[active];
@@ -241,6 +258,7 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
       title={title}
       date={date}
       imageSrc={logo}
+      websiteUrl={websiteUrl}
       outerBg="#bcd6c7"
       headerBg="#6fbda7"
       dateBg="#63a193"
@@ -277,7 +295,7 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
       <p className="text-[1.2rem] tracking-[1.4px] leading-snug whitespace-pre-line" style={{ fontFamily: FF_INT }}>
         {tab.description}
       </p>
-      {tab.draggableImages && <div className="hidden sm:block"><DraggableImagesArea items={tab.draggableImages} /></div>}
+      {tab.draggableImages && <DraggableImagesArea items={tab.draggableImages} />}
       {!tab.draggableImages?.length && tab.images && (
         <div className="flex gap-6 justify-center mt-8 flex-wrap">
           {tab.images.map((img, i) => (
@@ -318,8 +336,8 @@ function ProfCard({ id, logo, title, date, role, location, tabs }: ProfProps) {
             ? <p className="text-[1.05rem] tracking-[1px]" style={{ fontFamily: FF_INT, color: '#888' }}>{tab.location}</p>
             : <span />}
           {tab.date && (
-            <div className="px-3 py-1.5 border border-black rounded-[10px]" style={{ backgroundColor: '#6fbda7' }}>
-              <span className="font-bold text-[1.05rem] tracking-[0.48px]" style={{ fontFamily: FF_BG }}>
+            <div className="px-2 py-1 sm:px-3 sm:py-1.5 border border-black rounded-[10px]" style={{ backgroundColor: '#6fbda7' }}>
+              <span className="font-bold text-[0.78rem] sm:text-[1.05rem] tracking-[0.2px] sm:tracking-[0.48px]" style={{ fontFamily: FF_BG }}>
                 {tab.date}
               </span>
             </div>
@@ -389,6 +407,7 @@ export default function Experience() {
           logo={IMG_SCOWTT}
           title="SCOWTT"
           date="05.26-??.??"
+          websiteUrl="https://www.scowtt.com/"
           role="AI Agent Engineer Intern"
           location="Kirkland, WA"
           description="Developing a Slack-native AI onboarding agent integrated with Jira, Confluence, and other enterprise tools to streamline client onboarding workflows and improve cross-team coordination. Built context-aware automation systems using LangGraph, Temporal, and OpenAI APIs to track onboarding progress, answer client status queries, automatically generate and assign Jira tickets, and synchronize updates across platforms. Leveraged conversational AI, workflow orchestration, and scalable backend automation to reduce manual overhead, improve operational efficiency, and maintain team-wide alignment throughout the onboarding lifecycle."
@@ -399,6 +418,7 @@ export default function Experience() {
           logo={IMG_GOOGLE}
           title="GOOGLE"
           date="05.25-08.25"
+          websiteUrl="https://about.google/"
           role="Software Development Intern"
           location="Sunnyvale, CA"
           description="Co-developed an AI-powered security audit dashboard that empowers clients to independently identify and remediate access control vulnerabilities through intuitive Angular interfaces and seamless API integrations. Conducted comprehensive user research and discovery interviews, translating client insights into user-centered Figma designs and responsive frontend experiences. Established design principles that enhanced client needs assessment and accelerated product development cycles."
@@ -411,6 +431,7 @@ export default function Experience() {
           logo={IMG_CTC}
           title="[CTC] CODE THE CHANGE"
           date="08.24-??.??"
+          websiteUrl="https://www.ctcusc.com/"
           tabs={[
             { label: "Product Manager",  description: "Led the end-to-end redesign and product strategy of Feminist Center for Creative Work's (FCCW's) middleware operations platform, built to streamline workflows between the organization's CRM, Shopify, and client-facing operations. Defined and prioritized product requirements through stakeholder interviews and operational analysis, focusing on improving efficiency for event creation and management, event sign-up tracking, donation and membership management, and centralized reporting. Owned roadmap planning and Agile execution across a year-long development cycle, balancing organizational goals, user experience, and technical feasibility. Managed a cross-functional team of seven developers and four designers, partnering closely with engineering and design leads to align product vision, UX strategy, and implementation. Delivered iterative product feedback, validated feature completeness, and presented designs to clients regularly to refine requirements and optimize operational usability. Below are some pictures of my lovely team and bonding I planned:", location: "Los Angeles, CA", draggableImages: [
               { w: 295, h: 260, initX: 10, initY: 100, rot:  3, src: fccw,     caption: "our team spelling out FCCW" },
@@ -428,8 +449,9 @@ export default function Experience() {
           logo={IMG_LAVALAB}
           title="LAVALAB"
           date="08.24-05.26"
+          websiteUrl="https://usclavalab.org/"
           tabs={[
-            { label: 'Co-founder (Developer)',          description: "Led development of Lumen in collaboration with a cross-functional team, transforming scattered social media feedback into actionable insights and earning the Best Demo Award at an entrepreneurship showcase. I engineered an automated web-scraping system using Python that aggregates comments from Instagram, X, and app stores while implementing intelligent filtering and translation capabilities through the OpenAI API, ultimately saving companies over two hours of daily work. Additionally, I built a responsive frontend interface using React Vite and Tailwind CSS based on designer specifications and successfully integrated it with the web-scraping backend through Supabase, which resulted in adoption by three companies, including one with over 3 million active users.", location: "Los Angeles, CA", image: lumen, imageUrl: "https://usclavalab.org/startup-directory/lumen", imageW: 500, imageH: 500, imageCaption: "my lovely team :)\nclick to learn more about LUMEN", date: "08.24-12.24" },
+            { label: 'Co-founder (Developer)',          description: "Led development of Lumen in collaboration with a cross-functional team, transforming scattered social media feedback into actionable insights and earning the Best Demo Award at an entrepreneurship showcase. I engineered an automated web-scraping system using Python that aggregates comments from Instagram, X, and app stores while implementing intelligent filtering and translation capabilities through the OpenAI API, ultimately saving companies over two hours of daily work. Additionally, I built a responsive frontend interface using React Vite and Tailwind CSS based on designer specifications and successfully integrated it with the web-scraping backend through Supabase, which resulted in adoption by three companies, including one with over 3 million active users.", location: "Los Angeles, CA", image: lumen, imageUrl: "https://usclavalab.org/startup-directory/lumen", imageW: 500, imageH: 500, imageCaption: "click to learn more about LUMEN", date: "08.24-12.24" },
             { label: 'Director of Internal Community',  description: "Acted as USC's premier startup incubator's primary culture-keeper and community builder for each incoming cohort. Planned and executed high-engagement events including retreats, bonfires, and member socials, while continuously gathering member feedback to ideate and implement new initiatives that strengthened cohort connection and belonging. Collaborated with the Director of External Community to build mentorship bridges between current members and alumni, and supported initiatives connecting members to internships and industry opportunities. Built a Python automation script to auto-assign weekly LavaLunch pairings, reducing manual coordination overhead and ensuring consistent community engagement across the cohort. Some pictures from the events I was in charge of:", location: 'Los Angeles, CA', draggableImages: [
               { w: 310, h: 255, initX:   8, initY: 25, rot: -3, src: lavabonfire, caption: "LavaLab bonfire, which happens every semester. cohort and alum get to mix and get to know each other" },
               { w: 300, h: 265, initX: 320, initY: 30, rot:  2, src: lavademo,    caption: "eboard after our semesterly LavaLab demo day :)" },
@@ -445,6 +467,7 @@ export default function Experience() {
           logo={IMG_USC}
           title="RESEARCH @ USC"
           date="09.23-05.26"
+          websiteUrl="https://dill-lab.github.io/"
           tabs={[
             { label: 'DILL Lab',                          description: "Conducted NLP research focused on LLM personalization and subjective harm modeling, investigating whether large language models can simulate diverse human perspectives on toxic and offensive online content. Designed a persona-conditioned prompting framework spanning 3 persona constructions (demographic-only, belief-only, and combined) to evaluate model alignment with human toxicity annotations across 3 dimensions including hate speech, racism, and personal offense. Built a benchmarking suite to assess zero-shot and chain-of-thought prompting strategies, and architected a high-performance simulation pipeline using vLLM and HuggingFace Transformers to run inference across thousands of annotated data points. Research demonstrated that richer persona representations combining demographics and social beliefs achieved F1 of 0.889 on racism detection tasks, advancing context-aware and multi-perspective content moderation.", location: 'Los Angeles, CA', images: [{ src: paper, url: annotators, caption: 'read more!', w: 480, h: 400 }, { src: poster, caption: 'me presenting at ShowCAIS', w: 400, h: 420 }], date: '09.25-05.26' },
             { label: 'Radiomics Lab',                     description: "Built a comprehensive medical imaging platform leveraging Flask, Vue.js, and PyTorch to deliver AI-powered image segmentation and classification capabilities for healthcare professionals. Designed an intuitive, clinician-focused interface that streamlines diagnostic workflows and enhances clinical decision-making through advanced image analysis tools. Architected seamless AI integration and dynamic data visualization features, reducing image interpretation time and improving diagnostic accuracy for medical teams.", location: 'Los Angeles, CA', date: '09.24-12.24' },
@@ -457,6 +480,7 @@ export default function Experience() {
           logo={IMG_PORTICO}
           title="PORTICO WELLNESS"
           date="07.24-09.24"
+          websiteUrl="https://porticocare.com/"
           role="Software Development Intern"
           location="Seattle, WA"
           description="Engineered an intelligent calendar management system using React Remix, TypeScript, and Tailwind CSS with Supabase backend, seamlessly integrating Google Calendar and Outlook REST APIs to achieve a 70% improvement in scheduling efficiency. Delivered a comprehensive full-stack solution that transforms appointment management workflows, significantly enhancing user productivity through streamlined cross-platform calendar synchronization."
@@ -467,6 +491,7 @@ export default function Experience() {
           logo={IMG_TMG}
           title="[TMG] TROJAN MARKETING GROUP"
           date="05.25-08.25"
+          websiteUrl="https://www.trojanmarketinggroup.org/"
           role="Tech Consultant"
           location="Los Angeles, CA"
           tabs={[

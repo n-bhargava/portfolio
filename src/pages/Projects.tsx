@@ -22,7 +22,7 @@ const PINK_TAG      = '#d3727a';
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-interface MetaItem       { label: string; value: string; isStatus?: boolean }
+interface MetaItem       { label: string; value?: string; values?: string[]; isStatus?: boolean }
 interface ProcessStep    { title: string; body: string }
 interface CompareCol     { label: string; name: string; desc: string; highlight?: boolean }
 interface InspoItem      { color: string; label: string }
@@ -33,7 +33,8 @@ interface ProcessSection { kind: 'process'; heading: string; steps: ProcessStep[
 interface CompareSection { kind: 'compare'; heading: string; cols: CompareCol[] }
 interface DesignSection  { kind: 'design';  heading: string; body: string; inspo?: InspoItem[]; cards?: DesignCard[] }
 interface NextSection    { kind: 'next';    heading: string; items: string[] }
-type CaseSection = TextSection | ProcessSection | CompareSection | DesignSection | NextSection;
+interface ImagesSection  { kind: 'images';  heading: string; images: { src: string; caption: string }[] }
+type CaseSection = TextSection | ProcessSection | CompareSection | DesignSection | NextSection | ImagesSection;
 
 interface CaseStudy {
   title: string;
@@ -91,58 +92,72 @@ const CASE_STUDIES: Record<string, CaseStudy> = {
     links: [{ label: 'see it live →', href: '#' }, { label: 'the github →', href: '#' }],
   },
   bulletin: {
-    title: 'bulletin',
-    tagline: 'A spontaneous hangout app for when you have a free hour and no one to spend it with.',
-    heroImage: bulletinmain,
-    meta: [
-      { label: 'Role',   value: 'Solo Designer' },
-      { label: 'Tools',  value: 'Figma' },
-      { label: 'Status', value: 'Design complete · In development', isStatus: true },
-    ],
-    sections: [
-      {
-        kind: 'text',
-        heading: 'The "I\'m bored" text that goes nowhere',
-        body: 'It\'s 2pm on a Tuesday and you have two free hours. You want to hang out with someone, but you don\'t know who\'s free, and it feels weird to mass-text everyone. So you do nothing.',
-        quote: 'I am a customer of this product myself — my friend and I were constantly in this exact situation, bored at odd hours with no easy way to find out who was around.',
-        body2: 'The friction isn\'t wanting to hang out — it\'s the logistics of finding someone who\'s also free, at the same time, without it feeling like a big ask.',
-      },
-      {
-        kind: 'compare',
-        heading: 'Partiful is great — but it\'s for plans you already have',
-        cols: [
-          { label: 'Existing tools',   name: 'Partiful, iMessage, Instagram', desc: 'All require you to already have a plan — a time, a place, a guest list. They help you coordinate, not discover.' },
-          { label: 'Bulletin\'s space', name: 'Unplanned, low-stakes availability', desc: 'Post a free window, not an event. See who else is open. No set time required — just a vibe and a maybe.', highlight: true },
-        ],
-      },
-      {
-        kind: 'design',
-        heading: 'Sticky notes on a bulletin board',
-        body: 'The name and the visual language both come from the same image: a bulletin board covered in sticky notes. Ephemeral, casual, glanceable. The card-based layout lets you scan all open hangouts instantly, the same way you\'d scan a board.',
-        inspo: [
-          { color: '#F4C0D1', label: 'Pink — social, warm' },
-          { color: '#B5D4F4', label: 'Blue — calm, open' },
-          { color: '#FAC775', label: 'Yellow — sticky note energy' },
-        ],
-        cards: [
-          { title: 'Card-first feed',     desc: 'Events are scannable at a glance — no scrolling past noise to find who\'s free.' },
-          { title: 'No set time required', desc: 'You post a window ("free this afternoon"), not a calendar invite. Keeps the bar low.' },
-          { title: 'One-tap sign-up',      desc: 'Joining a hangout is as easy as tapping in. Reduce friction at every step.' },
-          { title: 'Multi-theme UI',       desc: 'Three color themes per event type to keep the feed visually distinct and alive.' },
-        ],
-      },
-      {
-        kind: 'next',
-        heading: 'Start small, validate with real people',
-        items: [
-          'Launch with my own friend group first — I\'m the target user, so I\'ll know immediately if it\'s working',
-          'Expand to college students and interns in new cities — people who want low-stakes ways to hang out with near-strangers',
-          'Address download fatigue — exploring a lightweight web version before committing to a native app',
-          'Location-aware discovery as a future layer, once trust and density are established',
-        ],
-      },
-    ],
-    links: [{ label: 'see the figma →', href: '#' }],
+  title: 'bulletin',
+  tagline: 'A spontaneous hangout app for when you have a free hour and no one to spend it with.',
+  heroImage: bulletinmain,
+  meta: [
+    { label: 'Role',   values: ['Solo Designer', 'Solo Developer'] },
+    { label: 'Tools',  value: 'Figma' },
+    { label: 'Status', values: ['Design complete', 'In development'], isStatus: true },
+  ],
+  sections: [
+    {
+      kind: 'text',
+      heading: 'The "I\'m bored" text that goes nowhere',
+      body: 'It\'s 2pm on a Tuesday. You have two free hours and nowhere to be. You open your texts, hover over a few names, and then put your phone down. It feels weird to mass-text people. You don\'t want to seem desperate. So you just don\'t.',
+      quote: 'My friend and I were stuck in this loop constantly. Bored at the same odd hours, living near each other, with no easy way to figure out if the other was free. We\'d find out after the fact. Every time.',
+      body2: 'The problem isn\'t that people don\'t want to hang out. It\'s that reaching out feels like a bigger ask than it actually is. Bulletin is about removing that friction. Making availability something you post, not something you negotiate.',
+    },
+    {
+      kind: 'compare',
+      heading: 'Partiful is great, but you need a plan first',
+      cols: [
+        {
+          label: 'Existing tools',
+          name: 'Partiful, iMessage, group chats',
+          desc: 'All assume you already know what you\'re doing, when, and with who. They\'re coordination tools, not discovery tools. They work great once there\'s a plan, but they can\'t help you make one from scratch.',
+        },
+        {
+          label: 'Where Bulletin fits',
+          name: 'Unplanned, low-stakes availability',
+          desc: 'Post a free window with loose details and a capacity. Whoever sees it first and wants in, signs up. No approval, no back-and-forth, no group chat needed.',
+          highlight: true,
+        },
+      ],
+    },
+    {
+      kind: 'design',
+      heading: 'How the design came together',
+      body: 'I started with lo-fi wireframes to figure out structure before touching color. The earliest frames were just placeholder blocks. I needed to know what the feed card had to communicate (title, time, location, who\'s going) before making it look like anything.\n\nFor the feed, I was using Reddit as a reference for how information hierarchy works at a glance. A designer friend flagged that my cards were too spread out and suggested condensing them so only the essential info shows upfront, with full details inside. That pushed me toward the tighter card layout with just a title, time and location tags, a photo, and a signup count.\n\nThe event detail view took the most rounds. Early on, the info fields (where, when, how many people, notes) looked like they could be tapped, which confused the hierarchy. The sign-up button was also getting lost. After feedback, I cleaned up the padding throughout and made the sign-up button the clear primary action, visually distinct from everything else on the screen.\n\nOne detail I liked was the message button. It\'s visible on every event, but the actual group chat doesn\'t open until the event closes, either because it filled up or it started. That way people aren\'t coordinating in a half-formed group chat before anyone\'s even committed.',
+      cards: [
+        { title: 'Condensed feed cards', desc: 'Inspired by Reddit\'s info hierarchy. Only the essentials show on the card: title, time, location, and who\'s already in. Full details open on tap.' },
+        { title: 'First-come-first-serve signups', desc: 'No approval, no RSVP back-and-forth. You post a capacity, people claim spots. Simple and low-pressure on both sides.' },
+        { title: 'Info that reads as info', desc: 'A big feedback round was making sure where/when/how many didn\'t look like interactive fields. They\'re display only. The sign-up button is the one thing you tap.' },
+        { title: 'Sticky note color system', desc: 'Pink, blue, and yellow come straight from sticky note colors, which fit the bulletin board metaphor. Users pick the color for their own event, so the feed ends up feeling like an actual board with a mix of notes pinned to it.' },
+        { title: 'Chat unlocks when the event closes', desc: 'There\'s a message button on every event, but the group chat only opens once enough people have signed up or the event has started. Keeps things from getting chaotic before the hangout is even confirmed.' },
+      ],
+    },
+    {
+      kind: 'images',
+      heading: 'how it evolved',
+      images: [
+        { src: '', caption: 'early lo-fi, structure before color' },
+        { src: '', caption: 'event detail modal, before feedback' },
+        { src: '', caption: 'after condensing cards and fixing padding' },
+      ],
+    },
+    {
+      kind: 'next',
+      heading: 'What I\'d actually do next',
+      items: [
+        'Start with my own friend group. I\'m the target user, so I\'ll know immediately if it\'s working.',
+        'College students and people new to a city are the real wedge. They want low-stakes ways to hang out with people they don\'t know well yet.',
+        'Figure out the download fatigue problem early. A web version might make more sense than going native right out of the gate.',
+        'Location-aware discovery is a later layer, once there\'s enough density for it to actually be useful.',
+      ],
+    },
+  ],
+  links: [{ label: 'see the figma →', href: 'https://www.figma.com/proto/lwka27GWCuxaBrEOtax51T/-DES-203--UI-UX-Designs?node-id=0-1&t=xoKZ0qy0U5jbRl4T-1' }],
   },
   fccw: {
     title: 'fccw',
@@ -387,23 +402,13 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
         <CsCloseBtn onClose={onClose} />
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '22px' }}>
-          <div style={{
-            width: '64px', height: '64px', flexShrink: 0,
-            backgroundColor: YELLOW_DARK, border: '1px solid black',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontFamily: FF_BG, fontWeight: 700, fontSize: '32px',
-          }}>
-            {cs.title[0]}
-          </div>
-          <div>
-            <h2 style={{ margin: 0, fontFamily: FF_BG, fontWeight: 700, fontSize: 'clamp(24px, 5vw, 44px)', letterSpacing: '-0.005em' }}>
-              {cs.title}
-            </h2>
-            <p style={{ margin: '4px 0 0', fontSize: '17px', color: '#555', fontStyle: 'italic' }}>
-              {cs.tagline}
-            </p>
-          </div>
+        <div style={{ marginBottom: '22px' }}>
+          <h2 style={{ margin: 0, fontFamily: FF_BG, fontWeight: 700, fontSize: 'clamp(24px, 5vw, 44px)', letterSpacing: '-0.005em' }}>
+            {cs.title}
+          </h2>
+          <p style={{ margin: '4px 0 0', fontSize: '17px', color: '#555', fontStyle: 'italic' }}>
+            {cs.tagline}
+          </p>
         </div>
 
         {/* Meta row */}
@@ -413,20 +418,29 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
           border: '1px solid black', backgroundColor: YELLOW_OUTER,
           marginBottom: '28px',
         }}>
-          {cs.meta.map(({ label, value, isStatus }) => (
-            <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-              <span style={{ fontFamily: FF_MONO, fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#555' }}>
-                {label}
-              </span>
-              {isStatus
-                ? <span style={{ fontSize: '15px', display: 'flex', alignItems: 'center', gap: '6px' }}>
-                    <span style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: '#639922', flexShrink: 0, display: 'inline-block' }} />
-                    {value}
-                  </span>
-                : <span style={{ fontSize: '15px' }}>{value}</span>
-              }
-            </div>
-          ))}
+          {cs.meta.map(({ label, value, values, isStatus }) => {
+            const lines = values ?? (value ? [value] : []);
+            return (
+              <div key={label} style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                <span style={{ fontFamily: FF_MONO, fontSize: '11px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#555' }}>
+                  {label}
+                </span>
+                {isStatus
+                  ? <span style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                      {lines.map((v, j) => (
+                        <span key={j} style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <span style={{ width: 7, height: 7, borderRadius: '50%', backgroundColor: '#639922', flexShrink: 0, display: 'inline-block' }} />
+                          {v}
+                        </span>
+                      ))}
+                    </span>
+                  : <span style={{ fontSize: '15px', display: 'flex', flexDirection: 'column', gap: '2px' }}>
+                      {lines.map((v, j) => <span key={j}>{v}</span>)}
+                    </span>
+                }
+              </div>
+            );
+          })}
         </div>
 
         {/* Hero image */}
@@ -532,10 +546,32 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
                 )}
                 {s.cards && (
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                    {s.cards.map((card, j) => (
-                      <div key={j} style={{ padding: '14px 16px', backgroundColor: CREAM_BODY, border: '1px solid black' }}>
-                        <p style={{ margin: '0 0 4px', fontSize: '13px', fontWeight: 600 }}>{card.title}</p>
-                        <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.6, color: '#555' }}>{card.desc}</p>
+                    {s.cards.map((card, j, arr) => (
+                      <div
+                        key={j}
+                        style={{
+                          padding: '16px 18px',
+                          backgroundColor: j % 2 === 0 ? YELLOW_OUTER : PINK_SOFT,
+                          border: '1px solid black',
+                          gridColumn: arr.length % 2 !== 0 && j === arr.length - 1 ? '1 / -1' : undefined,
+                          display: 'flex', flexDirection: 'column', gap: '8px',
+                        }}
+                      >
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                          <span style={{
+                            fontFamily: FF_MONO, fontSize: '11px', fontWeight: 700,
+                            letterSpacing: '0.08em', backgroundColor: PINK_TAG,
+                            padding: '2px 7px', border: '1px solid black', flexShrink: 0,
+                          }}>
+                            {String(j + 1).padStart(2, '0')}
+                          </span>
+                          <p style={{ margin: 0, fontFamily: FF_BG, fontSize: '15px', fontWeight: 700 }}>
+                            {card.title}
+                          </p>
+                        </div>
+                        <p style={{ margin: 0, fontSize: '13px', lineHeight: 1.65, color: '#555' }}>
+                          {card.desc}
+                        </p>
                       </div>
                     ))}
                   </div>
@@ -556,6 +592,23 @@ function CaseStudyOverlay({ id, onClose }: { id: string; onClose: () => void }) 
                   </li>
                 ))}
               </ul>
+            )}
+
+            {s.kind === 'images' && (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '12px' }}>
+                {s.images.map((img, j) => (
+                  <div key={j} style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <img
+                      src={img.src}
+                      alt={img.caption}
+                      style={{ width: '100%', display: 'block', border: '1px solid black', objectFit: 'cover' }}
+                    />
+                    <p style={{ margin: 0, fontFamily: FF_MONO, fontSize: '11px', letterSpacing: '0.06em', color: '#888', textAlign: 'center' }}>
+                      {img.caption}
+                    </p>
+                  </div>
+                ))}
+              </div>
             )}
           </section>
         ))}

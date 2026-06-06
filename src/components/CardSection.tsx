@@ -7,6 +7,7 @@ interface CardSectionProps {
   children: React.ReactNode;
   imageSrc?: string;
   imageAlt?: string;
+  websiteUrl?: string;
   date?: string;
   afterHeader?: React.ReactNode;
   outerBg?: string;
@@ -30,6 +31,7 @@ export function CardSection({
   children,
   imageSrc,
   imageAlt = '',
+  websiteUrl,
   date,
   afterHeader,
   outerBg = '#f3c3c2',
@@ -72,14 +74,42 @@ export function CardSection({
         onClick={onHeaderClick}
         style={onHeaderClick ? { cursor: 'pointer', userSelect: 'none' } : undefined}
       >
-        <div
-          className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 border border-black flex items-center justify-center"
-          style={{ backgroundColor: squareFill }}
-        >
-          {imageSrc && (
-            <img src={imageSrc} alt={imageAlt} className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />
-          )}
-        </div>
+        {websiteUrl ? (
+          <a
+            href={websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            onClick={e => e.stopPropagation()}
+            className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 border border-black flex items-center justify-center hover:opacity-70 transition-opacity relative"
+            style={{ backgroundColor: squareFill }}
+          >
+            {imageSrc && <img src={imageSrc} alt={imageAlt} className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />}
+            <span style={{
+              position: 'absolute',
+              bottom: -1,
+              right: -1,
+              width: 15,
+              height: 15,
+              border: '1px solid black',
+              backgroundColor: '#f7f3e6',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              zIndex: 1,
+            }}>
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 7L7 1M7 1H3.5M7 1V4.5" stroke="black" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"/>
+              </svg>
+            </span>
+          </a>
+        ) : (
+          <div
+            className="w-10 h-10 sm:w-12 sm:h-12 shrink-0 border border-black flex items-center justify-center"
+            style={{ backgroundColor: squareFill }}
+          >
+            {imageSrc && <img src={imageSrc} alt={imageAlt} className="w-8 h-8 sm:w-9 sm:h-9 object-contain" />}
+          </div>
+        )}
         <div
           className="flex-1 min-h-10 sm:min-h-12 border border-black flex items-center px-3 sm:px-4 py-1"
           style={{ backgroundColor: headerBg }}

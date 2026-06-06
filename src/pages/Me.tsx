@@ -1,6 +1,9 @@
 import { useState, useRef, useMemo, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { CardSection } from '../components/CardSection';
+import { Header } from '../components/Header';
+import ellipseFun from '../assets/ellipse-fun.svg';
+import ellipseFacts from '../assets/ellipse-facts.svg';
 import cplusplus from '../assets/cplusplus.svg'
 import css from '../assets/css3.svg'
 import headshot from '../assets/headshot.svg'
@@ -42,8 +45,8 @@ const links = [
   },
 ] as const;
 
-const FUN_OFFSETS   = [0,  8, 2];
-const FACTS_OFFSETS = [8,  4, 0, 6, 2];
+const FUN_OFFSETS   = [0, 18,  6];
+const FACTS_OFFSETS = [4, 15,  0, 10, 9];
 
 // ── Interactive name ──────────────────────────────────────────────────────────
 
@@ -111,10 +114,9 @@ function InteractiveName({ text }: { text: string }) {
 // ── Page ─────────────────────────────────────────────────────────────────────
 
 export default function Me() {
-  const navigate = useNavigate();
   const [easterOn, setEasterOn] = useState(false);
   const [eggCount, setEggCount] = useState(0);
-  const [uscOpen, setUscOpen] = useState(false);
+  const [uscOpen, setUscOpen] = useState(true);
   const [vdlOpen, setVdlOpen] = useState(false);
 
   const easterText =
@@ -129,12 +131,7 @@ export default function Me() {
   return (
     <div style={{ fontFamily: "'Inter', sans-serif" }} className="page-enter">
       {/* ── Navigation ── */}
-      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
-        <span className="font-bold">[me!]</span>
-        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
-      </nav>
+      <Header active="me" />
 
       {/* ── Title (centered, interactive) ── */}
       <div className="px-8 pb-8 text-center">
@@ -251,33 +248,35 @@ export default function Me() {
             {/* Fun facts */}
             <div className="border border-black p-5" style={{ backgroundColor: '#f3efe1' }}>
               {/* Bubble letters */}
-              <div className="flex gap-3 mb-5">
-                <div className="flex items-end">
+              <div className="flex gap-5 mb-5">
+                <div className="flex">
                   {['f', 'u', 'n'].map((ch, i) => (
                     <div
                       key={i}
-                      className="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex items-center justify-center mx-0.5"
-                      style={{ backgroundColor: '#c4a882', marginTop: FUN_OFFSETS[i] + 'px' }}
+                      className="relative w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center"
+                      style={{ marginTop: FUN_OFFSETS[i] + 'px' }}
                     >
+                      <img src={ellipseFun} alt="" className="absolute inset-0 w-full h-full" />
                       <span
-                        className="font-bold text-[0.75rem] sm:text-[0.875rem] leading-none"
-                        style={{ fontFamily: "'Akshar', sans-serif", color: '#f7f3e6' }}
+                        className="relative font-bold leading-none"
+                        style={{ fontFamily: "'Akshar', sans-serif", color: '#f7f3e6', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}
                       >
                         {ch}
                       </span>
                     </div>
                   ))}
                 </div>
-                <div className="flex items-end">
+                <div className="flex">
                   {['f', 'a', 'c', 't', 's'].map((ch, i) => (
                     <div
                       key={i}
-                      className="w-6 h-6 sm:w-9 sm:h-9 rounded-full flex items-center justify-center mx-0.5"
-                      style={{ backgroundColor: '#7c5642', marginTop: FACTS_OFFSETS[i] + 'px' }}
+                      className="relative w-7 h-7 sm:w-9 sm:h-9 flex items-center justify-center"
+                      style={{ marginTop: FACTS_OFFSETS[i] + 'px' }}
                     >
+                      <img src={ellipseFacts} alt="" className="absolute inset-0 w-full h-full" />
                       <span
-                        className="font-bold text-[0.75rem] sm:text-[0.875rem] leading-none"
-                        style={{ fontFamily: "'Akshar', sans-serif", color: '#f1eddf' }}
+                        className="relative font-bold leading-none"
+                        style={{ fontFamily: "'Akshar', sans-serif", color: '#f1eddf', fontSize: 'clamp(1.1rem, 2.5vw, 1.5rem)' }}
                       >
                         {ch}
                       </span>
@@ -303,10 +302,10 @@ export default function Me() {
                   <p className="font-bold tracking-[0.8px] mb-1" style={{ color: '#9b090e' }}>into</p>
                   <p>
                     collecting{' '}
-                    <a href="/fun" className="font-bold underline">Hirono</a>
+                    <Link to="/fun" className="font-bold underline">Hirono</Link>
                     's (and various other trinkets), taking care of{' '}
-                    <a href="/fun" className="font-bold underline">my Tamagotchi</a>. also,{' '}
-                    <a href="/fun" className="font-bold underline">henna</a>.
+                    <Link to="/fun" className="font-bold underline">my Tamagotchi</Link>. also,{' '}
+                    <Link to="/fun" className="font-bold underline">henna</Link>.
                   </p>
                 </div>
 
@@ -315,7 +314,7 @@ export default function Me() {
                   <p className="font-bold tracking-[0.8px] mb-1" style={{ color: '#9b090e' }}>planning</p>
                   <p>
                     my next adventure in{' '}
-                    <a href="/fun" className="font-bold underline">nature</a>
+                    <Link to="/fun" className="font-bold underline">nature</Link>
                   </p>
                 </div>
 

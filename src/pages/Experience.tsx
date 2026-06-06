@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { CardSection } from '../components/CardSection';
+import { Header } from '../components/Header';
 import annotators from '../assets/annotators.pdf'
 import campfire from '../assets/campfire.svg'
 import datebetter from '../assets/datebetter.svg'
@@ -350,16 +350,10 @@ function ProfCard({ id, logo, title, date, role, location, tabs, websiteUrl }: P
 
 // ── Page ─────────────────────────────────────────────────────────────────────
 export default function Experience() {
-  const navigate = useNavigate();
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
       {/* Navigation */}
-      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
-        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <span className="font-bold">[experience]</span>
-        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
-      </nav>
+      <Header active="experience" />
 
       <div className="px-6 sm:px-10 pb-16 max-w-[1440px] mx-auto space-y-6">
 

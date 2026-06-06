@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { createPortal } from 'react-dom';
 import { CardSection } from '../components/CardSection';
+import { Header } from '../components/Header';
 import bulletinmain from '../assets/bulletin.svg'
 import fccwmain from '../assets/fccwmain.svg'
 import lumenmain from '../assets/lumenmain.svg';
@@ -655,12 +656,7 @@ export default function Projects() {
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
       {/* Navigation */}
-      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
-        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <span className="font-bold">[projects]</span>
-        <button className="hover:opacity-70" onClick={() => navigate('/fun')}>[playground]</button>
-      </nav>
+      <Header active="projects" />
 
       {/* Grid */}
       <div className="px-6 sm:px-10 pb-16 max-w-[1440px] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-6">

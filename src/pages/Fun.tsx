@@ -1,5 +1,5 @@
 // import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Header } from '../components/Header';
 
 const FF_BG  = "'Bricolage Grotesque', sans-serif";
 const FF_INT = "'Inter', sans-serif";
@@ -98,15 +98,9 @@ const FF_INT = "'Inter', sans-serif";
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Fun() {
-  const navigate = useNavigate();
   return (
     <div style={{ fontFamily: FF_INT }} className="page-enter">
-      <nav className="flex flex-wrap justify-end gap-x-3 sm:gap-x-5 gap-y-1 px-4 sm:px-8 pt-4 pb-3 sm:pb-8 text-sm sm:text-[1.4rem] tracking-normal sm:tracking-[1.6px]">
-        <button className="hover:opacity-70" onClick={() => navigate('/')}>[me!]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/experience')}>[experience]</button>
-        <button className="hover:opacity-70" onClick={() => navigate('/projects')}>[projects]</button>
-        <span className="font-bold">[playground]</span>
-      </nav>
+      <Header active="playground" />
 
       <div className="px-6 sm:px-10 pb-24 max-w-[1440px] mx-auto flex items-center justify-center" style={{ minHeight: '60vh' }}>
         <p style={{ fontFamily: FF_BG, fontSize: '2rem', letterSpacing: '0.05em', color: '#aaa' }}>

@@ -6,7 +6,7 @@ const PAGES: { key: Page; label: string; path: string; active: string; hover: st
   { key: 'me',         label: 'me!',        path: '/',           active: '#d3727a', hover: '#f3c3c2' },
   { key: 'experience', label: 'experience', path: '/experience', active: '#90b659', hover: '#cfdfb1' },
   { key: 'projects',   label: 'projects',   path: '/projects',   active: '#f3d85b', hover: '#f3e5b7' },
-  { key: 'playground', label: 'playground', path: '/fun',        active: '#6fbda7', hover: '#bcd6c7' },
+  { key: 'playground', label: 'playground', path: '/playground', active: '#6fbda7', hover: '#bcd6c7' },
 ];
 
 export function Header({ active }: { active: Page }) {

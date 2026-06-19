@@ -360,9 +360,9 @@ export default function Experience() {
         {/* ── Index links — centered ── */}
         <div className="flex flex-col sm:flex-row gap-4">
             {/* Internships */}
-            <div className="flex-[1.5] border border-black p-2" style={{ backgroundColor: '#cfdfb1' }}>
+            <div className="flex-1 border border-black p-2" style={{ backgroundColor: '#cfdfb1' }}>
               <div
-                className="border border-black min-h-10 sm:min-h-12 flex items-center px-3 sm:px-5 mb-3"
+                className="border border-black min-h-10 sm:min-h-12 flex items-center justify-center px-3 sm:px-5 mb-3"
                 style={{ backgroundColor: '#90b659' }}
               >
                 <span className="font-bold text-[1rem] sm:text-[1.3rem] tracking-[0.5px] sm:tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>
@@ -379,7 +379,7 @@ export default function Experience() {
             {/* Professional Experience */}
             <div className="flex-1 border border-black p-2" style={{ backgroundColor: '#bcd6c7' }}>
               <div
-                className="border border-black min-h-10 sm:min-h-12 flex items-center px-3 sm:px-5 mb-3"
+                className="border border-black min-h-10 sm:min-h-12 flex items-center justify-center px-3 sm:px-5 mb-3"
                 style={{ backgroundColor: '#6fbda7' }}
               >
                 <span className="font-bold text-[1rem] sm:text-[1.3rem] tracking-[0.5px] sm:tracking-[1.5px] whitespace-nowrap" style={{ fontFamily: FF_BG }}>

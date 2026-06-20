@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Header } from '../components/Header';
 import businessCard from '../assets/business-card.svg';
 import artboard1 from '../assets/artboard-1.svg';
@@ -119,8 +119,13 @@ function ArtCard({ item }: { item: ArtItem }) {
 // ── Page ──────────────────────────────────────────────────────────────────────
 
 export default function Playground() {
+  useEffect(() => {
+    document.documentElement.classList.add('no-noise');
+    return () => document.documentElement.classList.remove('no-noise');
+  }, []);
+
   return (
-    <div style={{ fontFamily: FF_INT }} className="page-enter">
+    <div style={{ fontFamily: FF_INT, position: 'relative', zIndex: 2 }} className="page-enter">
       <Header active="playground" />
 
       <div className="px-6 sm:px-10 pb-24 max-w-[1440px] mx-auto">

@@ -18,6 +18,10 @@ html::after {
   z-index: 9999;
 }
 
+html.no-noise::after {
+  z-index: 1;
+}
+
 body {
   background-color: #F0E8DB;
 }

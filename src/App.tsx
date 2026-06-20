@@ -12,6 +12,7 @@ export default function App() {
       <Route path="/projects"      element={<Projects />} />
       <Route path="/projects/:id"  element={<Projects />} />
       <Route path="/playground"        element={<Playground />} />
+      <Route path="/fun"              element={<Navigate to="/playground" replace />} />
       <Route path="*"           element={<Navigate to="/" replace />} />
     </Routes>
   );
